@@ -11,4 +11,11 @@ class Controller{
         echo json_encode($data);
         exit;
     }
+
+    protected function errorResponse($data, $status = 500) { 
+        header('Content-Type: application/json');
+        http_response_code($status);
+        echo json_encode(['error'=>$data]);
+        exit;
+    }
 }

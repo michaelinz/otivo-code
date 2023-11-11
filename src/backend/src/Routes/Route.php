@@ -3,11 +3,14 @@
 namespace Src\Routes;
 
 use Src\Controllers\TestController;
+use Src\Controllers\LocationController;
 
 class Route{
     public function __construct()
     {
         $this->addRoute('GET', '/accomodations', TestController::class, 'index');
+        $this->addRoute('GET', '/suburbs', LocationController::class, 'indexSuburbs');
+        $this->addRoute('GET', '/areas', LocationController::class, 'indexAreas');
     }
 
     private $routes = [];
