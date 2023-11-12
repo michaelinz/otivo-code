@@ -15,8 +15,8 @@ services:
     volumes:
       - ./src/backend:/var/www/html
 
-  # redis:
-  #   image: redis:latest
+  redis:
+    image: redis:latest
 
   frontend:
     build: ./src/frontend
