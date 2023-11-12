@@ -6,8 +6,6 @@ import ProductDialog from './ProductDialog.vue';
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 
-
-
 export default {
   components: {
     SearchSelect,
@@ -24,14 +22,16 @@ export default {
     const areas = ref([]);
     const suburbs = ref([]);
 
-    const selectedLocationType = ref(route.query?.selectedLocationType ? route.query.selectedLocationType :  'ar');
-    const selectedLocation = ref(route.query?.selectedLocation ? route.query.selectedLocation:'');
+    const selectedLocationType = ref(route.query?.selectedLocationType ? route.query.selectedLocationType : 'ar');
+    const selectedLocation = ref(route.query?.selectedLocation ? route.query.selectedLocation : '');
 
-    const selectedPage = ref(route.query?.selectedPage ? route.query.selectedPage:1);
-    const selectedPageSize = ref(route.query?.selectedPageSize ? route.query.selectedPageSize:20);
+    const selectedPage = ref(route.query?.selectedPage ? route.query.selectedPage : 1);
+    const selectedPageSize = ref(route.query?.selectedPageSize ? route.query.selectedPageSize : 20);
 
     const isProductDialogOpen = ref(false);
     const dialogProductData = ref(null);
+
+    const results = ref(0);
 
 
     ApiService.getAreasFromApi().then((res) => {
@@ -49,12 +49,6 @@ export default {
 
     function search() {
       isloading.value = true;
-      // console.log({
-      //   selectedLocationType: selectedLocationType.value,
-      //   selectedLocation: selectedLocation.value,
-      //   selectedPage: selectedPage.value,
-      //   selectedPageSize: selectedPageSize.value,
-      // })
 
       ApiService.getProductsFromApi(
         selectedPage.value, selectedPageSize.value,
@@ -62,6 +56,7 @@ export default {
       ).then((res) => {
         console.log(res)
         products.value = res.data.products;
+        results.value = res.data.numberOfResults
         isloading.value = false;
       });
 
@@ -82,7 +77,6 @@ export default {
       isProductDialogOpen.value = true;
     }
 
-    // watch for selectedPage changes
     watch(selectedPage, (newSelectedPage, oldSelectedPage) => {
       if (newSelectedPage !== oldSelectedPage) {
         search();
@@ -91,8 +85,8 @@ export default {
 
     search();
 
-
     return {
+      results,
       isloading,
       openProductDialog,
       search,
@@ -132,7 +126,7 @@ export default {
           <SearchSelect v-if="suburbs.length && selectedLocationType == 'ct'" class="mx-2 w-50" :options="suburbs"
             placeholder="Enter City/Suburb" v-model="selectedLocation" />
 
-          <select class="form-select w-25 mx-2" id="pageSizeSelect" v-model="selectedPageSize">
+          <select class="form-select w-50 mx-2" id="pageSizeSelect" v-model="selectedPageSize">
             <option :value=10>10 per page</option>
             <option :value=20>20 per page</option>
             <option :value=50>50 per page</option>
@@ -156,6 +150,9 @@ export default {
             </div>
           </div>
         </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        {{ results }} results found, page {{ selectedPage }} of {{ Math.ceil(results / selectedPageSize) }}
       </div>
 
       <div class="d-flex justify-content-center mb-5">
