@@ -11,10 +11,8 @@ class RedisService {
     public function __construct()
     {
         $this->connection = new Client([
-            'scheme' => 'tcp',
-            'host' => '52.62.219.134',
-            'password' => 'largepass1101',
-            'port' => 6379,
+            'host' => getenv('REDIS_HOST'),
+            'port' => getenv('REDIS_PORT'),
         ]);
     }
     

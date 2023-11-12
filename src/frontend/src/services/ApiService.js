@@ -1,11 +1,12 @@
 import axios from 'axios';
 
+
+
 export default  {
 
     getProductsFromApi(currentPageNum, pageDataSize, selectedLocationType='', selectedLocation='') {
-        const baseUrl = 'http://localhost:9100';
 
-        const api = `${baseUrl}/accomodations?locationType=${selectedLocationType}&location=${selectedLocation}&currentPage=${currentPageNum}&pageSize=${pageDataSize}`;
+        const api = `${import.meta.env.VITE_API_URL}/accomodations?locationType=${selectedLocationType}&location=${selectedLocation}&currentPage=${currentPageNum}&pageSize=${pageDataSize}`;
 
         const res = axios
             .get(api, this.formData)
@@ -19,9 +20,8 @@ export default  {
     },
 
     getAreasFromApi() {
-        const baseUrl = 'http://localhost:9100';
 
-        const api = `${baseUrl}/areas`;
+        const api = `${import.meta.env.VITE_API_URL}/areas`;
 
         const res = axios
             .get(api, this.formData)
@@ -36,9 +36,8 @@ export default  {
 
 
     getSuburbsFromApi() {
-        const baseUrl = 'http://localhost:9100';
 
-        const api = `${baseUrl}/suburbs`;
+        const api = `${import.meta.env.VITE_API_URL}/suburbs`;
 
         const res = axios
             .get(api, this.formData)

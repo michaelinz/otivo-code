@@ -11,10 +11,10 @@ class AtlasApi {
     private $defaultOptions; 
 
     public function __construct() {
-        $this->baseUri = 'https://atlas.atdw-online.com.au/api/';
+        $this->baseUri = getenv('ATLAS_API_BASE');
         $this->client = new Client(['base_uri' => $this->baseUri]);
         $this->defaultOptions = [
-            'key'=>123456789101112,
+            'key'=>getenv('ATLAS_API_KEY'),
             'out'=>'json'
         ];
     }
