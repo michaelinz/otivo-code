@@ -35,16 +35,19 @@ export default {
 
 
     ApiService.getAreasFromApi().then((res) => {
-      areas.value = res.data ? res.data.map((area) => {
-        return area.Name
-      }) : [];
+      if (res.data && res.data.length) {
+        areas.value = res.data.map((area) => {
+          return area.Name
+        });
+      }
     });
 
     ApiService.getSuburbsFromApi().then((res) => {
-      suburbs.value = res.data[0].Suburbs;
-      suburbs.value = res.data ? res.data[0].Suburbs.map((suburb) => {
-        return suburb.Name
-      }) : [];
+      if (res.data && res.data[0]?.Suburbs?.length) {
+        suburbs.value =  res.data[0].Suburbs.map((suburb) => {
+          return suburb.Name
+        });
+      }
     });
 
     function search() {
